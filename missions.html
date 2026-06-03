@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Missions — Aurélien Caudron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="experience.html">Expérience</a></li>
+        <li><a href="missions.html" class="active">Missions</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="formation.html">Formation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+      <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <div class="page-hero">
+    <p class="page-tag">Réalisations clients</p>
+    <h1 class="page-title">Mes <span>missions</span></h1>
+    <p class="page-intro">Des interventions variées pour des clients de secteurs différents — de la mise en place d'environnements cloud à la refonte d'infrastructures critiques.</p>
+  </div>
+
+  <section>
+    <p class="section-label">Cloud &amp; Mobilité</p>
+    <div class="missions-grid">
+
+      <div class="mission-card">
+        <span class="mission-sector">Retail · Wambrechies</span>
+        <div class="mission-title">Déploiement Intune &amp; migration cloud Microsoft</div>
+        <div class="mission-context">Accompagnement d'un client sans outil de gestion de parc, saturé par les limites de ses boîtes mails OVH.</div>
+        <ul class="mission-bullets">
+          <li>Cadrage de la solution vers l'écosystème <strong>Azure &amp; Intune</strong> : chiffrement, MFA, accès conditionnel, politique de correctifs</li>
+          <li>Création du tenant, des utilisateurs en masse, de la hiérarchie et des droits d'accès</li>
+          <li>Configuration des profils Intune, test sur un pool cible, puis enrollment &amp; formatage en roulement pour limiter l'impact utilisateur</li>
+          <li>Migration de <strong>Dropbox vers SharePoint</strong> et des boîtes mails vers le nouvel environnement cloud</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Retail · Armentières</span>
+        <div class="mission-title">Migration messagerie OVH vers Office 365</div>
+        <div class="mission-context">Remédiation d'un environnement Microsoft utilisant des licences personnelles partagées, non conformes.</div>
+        <ul class="mission-bullets">
+          <li>Audit des licences Office et des boîtes mails actives</li>
+          <li>Cartographie cible : comptes, droits, types de licences, historiques à rapatrier</li>
+          <li>Création du tenant, configuration initiale, migration du flux <strong>MX</strong> et des historiques en heure non ouvrable</li>
+          <li>Accompagnement sur site pour le paramétrage des accès et du <strong>MFA en accès conditionnel</strong></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Sauvegarde &amp; Continuité</p>
+    <div class="missions-grid">
+
+      <div class="mission-card">
+        <span class="mission-sector">Retail · Wambrechies</span>
+        <div class="mission-title">Sauvegarde Office 365 — NAS Synology</div>
+        <div class="mission-context">Sécurisation des données M365 pour s'affranchir des limites du versioning natif.</div>
+        <ul class="mission-bullets">
+          <li>Dimensionnement des volumes selon la politique de rétention client</li>
+          <li>Déploiement d'un <strong>NAS Synology</strong> et configuration d'Active Backup for O365</li>
+          <li>Sauvegarde automatisée des comptes, boîtes mails, OneDrive et SharePoint</li>
+          <li>Procédures de restauration : gestion des suppressions accidentelles et PRA en cas de compromission du tenant</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Pharma / Biotech · Loos</span>
+        <div class="mission-title">Reprise en main de l'infrastructure de sauvegarde sur bande</div>
+        <div class="mission-context">Urgence suite au départ d'un collaborateur : infrastructure critique sans documentation.</div>
+        <ul class="mission-bullets">
+          <li>Renouvellement complet d'un lot de cassettes vieillissantes</li>
+          <li>Rédaction de la documentation technique complète sous <strong>Veeam</strong> : détection, nommage, mise en service, vérification, dépannage</li>
+          <li>Mise en place de la supervision et tests de restauration en condition réelle pour valider le PRA</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Automatisation &amp; Déploiement</p>
+    <div class="missions-grid">
+
+      <div class="mission-card">
+        <span class="mission-sector">Immobilier · Wasquehal</span>
+        <div class="mission-title">Automatisation PowerShell — Gestion des comptes utilisateurs</div>
+        <div class="mission-context">Processus de création de comptes Active Directory jusqu'alors manuel et source d'erreurs récurrentes.</div>
+        <ul class="mission-bullets">
+          <li>Développement d'un script <strong>PowerShell interactif</strong> avec saisie obligatoire des données clés</li>
+          <li>Automatisation de la modification des attributs et de l'affectation des groupes de sécurité</li>
+          <li>Élimination des oublis de configuration et réduction significative du temps de provisionnement</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Industrie · Templemars</span>
+        <div class="mission-title">Masterisation &amp; déploiement de postes de travail</div>
+        <div class="mission-context">Relais technique local pour les filiales française, belge et hollandaise, en coordination avec un support global basé en Angleterre.</div>
+        <ul class="mission-bullets">
+          <li>Masterisation, configuration multilingue et personnalisation des équipements (laptops, desktops, All-in-One)</li>
+          <li>Gestion de la logistique d'expédition et déploiements physiques sur site</li>
+          <li>Audit du parc : identification du matériel obsolète, escalade des tickets bloquants</li>
+          <li>Déplacements réguliers en autonomie en <strong>Belgique et aux Pays-Bas</strong></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Sécurité &amp; Administration</p>
+    <div class="missions-grid">
+
+      <div class="mission-card">
+        <span class="mission-sector">Recherche · Lille</span>
+        <div class="mission-title">Refonte du système antivirus — CNRS (EGID)</div>
+        <div class="mission-context">Reprise en main d'un serveur de sécurité non managé et de postes hors contrôle dans un laboratoire de recherche.</div>
+        <ul class="mission-bullets">
+          <li>Audit de l'existant et recueil des contraintes spécifiques aux postes de production et d'analyse</li>
+          <li>Conception de la politique de sécurité cible : groupes de machines, règles d'exclusion</li>
+          <li>Configuration, automatisation et déploiement de la nouvelle solution sur l'ensemble du parc</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Multi-clients</span>
+        <div class="mission-title">Support &amp; administration systèmes multi-niveaux</div>
+        <div class="mission-context">Prise en charge continue du support technique pour un portefeuille de clients aux environnements variés.</div>
+        <ul class="mission-bullets">
+          <li>Support N1, N2, N3 : incidents, demandes, back-log, relation téléphonique</li>
+          <li>Supervision et maintenance de parcs informatiques</li>
+          <li>Administration <strong>Windows Server, Active Directory, GPO</strong></li>
+          <li>Vision transverse acquise par une évolution progressive du poste de technicien à administrateur</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Aurélien Caudron</span>
+    <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
+  </footer>
+</div>
+<script>
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme") || "dark";
+  root.setAttribute("data-theme", saved);
+  function toggleTheme() {
+    const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+    document.querySelector(".theme-toggle").textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll("section").forEach(s => obs.observe(s));
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compétences — Aurélien Caudron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="experience.html">Expérience</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="competences.html" class="active">Compétences</a></li>
+        <li><a href="formation.html">Formation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+      <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <div class="page-hero">
+    <p class="page-tag">Savoir-faire technique</p>
+    <h1 class="page-title">Mes <span>compétences</span></h1>
+  </div>
+
+  <section>
+    <p class="section-label">Cloud &amp; Infrastructure</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-label">Cloud Microsoft</div>
+        <div class="skill-tags">
+          <span class="tag">Microsoft Azure</span><span class="tag">Intune</span>
+          <span class="tag">Autopilot</span><span class="tag">Office 365</span><span class="tag">M365</span><span class="tag">SharePoint</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-label">Systèmes</div>
+        <div class="skill-tags">
+          <span class="tag">Windows Server</span><span class="tag">Linux</span>
+          <span class="tag">Active Directory</span><span class="tag">GPO</span><span class="tag">Hyper-V</span><span class="tag">VMware</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-label">Réseau</div>
+        <div class="skill-tags">
+          <span class="tag">Firewall</span><span class="tag">VLAN</span><span class="tag">TCP/IP</span><span class="tag">VPN</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Sécurité &amp; Outils</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-label">Sécurité</div>
+        <div class="skill-tags">
+          <span class="tag">Kaspersky Security</span><span class="tag">With-Secure</span><span class="tag">MFA</span><span class="tag">Accès conditionnel</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-label">Outils &amp; ITSM</div>
+        <div class="skill-tags">
+          <span class="tag">GLPI</span><span class="tag">PowerShell</span><span class="tag">Action1</span><span class="tag">Veeam</span><span class="tag">Synology NAS</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-label">Supervision</div>
+        <div class="skill-tags">
+          <span class="tag">Zabbix</span><span class="tag">Nagios</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Transversal &amp; Langues</p>
+    <div class="chips">
+      <div class="chip"><span class="chip-dot"></span>Gestion de projet IT</div>
+      <div class="chip"><span class="chip-dot"></span>Support N1 / N2 / N3</div>
+      <div class="chip"><span class="chip-dot"></span>Formation &amp; pédagogie</div>
+      <div class="chip"><span class="chip-dot"></span>ITIL</div>
+      <div class="chip"><span class="chip-dot"></span>Rédaction de documentation</div>
+      <div class="chip"><span class="chip-dot"></span>Anglais technique B2</div>
+      <div class="chip"><span class="chip-dot"></span>Mobile France &amp; international</div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Aurélien Caudron</span>
+    <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
+  </footer>
+</div>
+<script>
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme") || "dark";
+  root.setAttribute("data-theme", saved);
+  function toggleTheme() {
+    const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+    document.querySelector(".theme-toggle").textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll("section").forEach(s => obs.observe(s));
+  });
+</script>
+</body>
+</html>

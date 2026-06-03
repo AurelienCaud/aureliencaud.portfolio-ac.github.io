@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expérience — Aurélien Caudron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="experience.html" class="active">Expérience</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="formation.html">Formation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+      <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <div class="page-hero">
+    <p class="page-tag">Parcours professionnel</p>
+    <h1 class="page-title">Expérience <span>professionnelle</span></h1>
+    <p class="page-intro">Trois ans d'alternance au sein d'Extern IT, passant de technicien support à chef de projet cloud, avant de rejoindre l'équipe en CDI.</p>
+  </div>
+
+  <section>
+    <p class="section-label">Postes</p>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Administrateur Systèmes &amp; Réseaux</div>
+            <div class="tl-company">Extern IT · Wambrechies</div>
+          </div>
+          <span class="tl-date">Août 2024 – Juin 2025</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Interventions à distance et sur site en France, Belgique et Pays-Bas</li>
+          <li>Déploiement <strong>Intune / Autopilot</strong> : création de tenants, configuration des profils, groupes de sécurité et gestion des applications</li>
+          <li>Traitement d'incidents niveau 3 (système et réseau)</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Chef de projet Cloud OPS <em style="font-weight:300;font-size:14px;color:var(--dim)">(alternance)</em></div>
+            <div class="tl-company">Extern IT · Wambrechies</div>
+          </div>
+          <span class="tl-date">Sept. 2023 – Août 2024</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Pilotage et suivi de projets IT multi-clients</li>
+          <li>Migration messagerie <strong>OVH vers Office 365</strong></li>
+          <li>Audit réseau et matériel</li>
+          <li>Formation et intégration des nouveaux arrivants</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Administrateur Systèmes &amp; Réseaux <em style="font-weight:300;font-size:14px;color:var(--dim)">(alternance)</em></div>
+            <div class="tl-company">Extern IT · Wambrechies</div>
+          </div>
+          <span class="tl-date">Sept. 2021 – Août 2023</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Support multi-niveaux N1/N2/N3 pour un portefeuille de clients diversifiés</li>
+          <li>Animation de formations internes : <strong>Action1, Intune, With-Secure, PowerShell</strong></li>
+          <li>Collaboration internationale (anglais) pour le déploiement d'outils d'image système Windows</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Administrateur Systèmes <em style="font-weight:300;font-size:14px;color:var(--dim)">(stage)</em></div>
+            <div class="tl-company">CNRS – EGID · Lille</div>
+          </div>
+          <span class="tl-date">Janv. – Fév. 2021</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Audit et refonte complète du système antivirus <strong>Kaspersky</strong></li>
+          <li>Conception de la politique de sécurité, déploiement sur l'ensemble du parc</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Aurélien Caudron</span>
+    <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
+  </footer>
+</div>
+<script>
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme") || "dark";
+  root.setAttribute("data-theme", saved);
+  function toggleTheme() {
+    const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+    document.querySelector(".theme-toggle").textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll("section").forEach(s => obs.observe(s));
+  });
+</script>
+</body>
+</html>

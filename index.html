@@ -1,394 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aurélien Caudron — Administrateur Systèmes & Réseaux</title>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurélien Caudron — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --navy:    #0D1B2A;
-      --navy2:   #162032;
-      --accent:  #3B82F6;
-      --accent2: #60A5FA;
-      --dim:     #8899AA;
-      --soft:    #C8D8E8;
-      --bg:      #07111C;
-      --card:    #111E2C;
-      --border:  rgba(59,130,246,.18);
-      --white:   #A8BEFF;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--white);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      opacity: .5;
-    }
-
-    body::after {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(59,130,246,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
-    }
-
-    .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
-
-    .hero {
-      padding: 80px 0 60px;
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: end;
-    }
-
-    .hero-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 2.5px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      opacity: 0;
-      animation: fadeUp .6s .1s forwards;
-    }
-
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(38px, 7vw, 68px);
-      font-weight: 800;
-      line-height: .95;
-      letter-spacing: -2px;
-      color: var(--white);
-      opacity: 0;
-      animation: fadeUp .6s .2s forwards;
-    }
-
-    h1 span {
-      display: block;
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      color: var(--dim);
-      margin-top: 20px;
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeUp .6s .35s forwards;
-    }
-
-    .hero-sub strong { color: var(--soft); font-weight: 400; }
-
-    .status-dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      margin-right: 8px;
-      box-shadow: 0 0 0 0 rgba(34,197,94,.4);
-      animation: pulse 2s infinite;
-    }
-
-    .hero-contact {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-end;
-      opacity: 0;
-      animation: fadeUp .6s .45s forwards;
-    }
-
-    .contact-item {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--dim);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color .2s;
-    }
-    .contact-item:hover { color: var(--accent2); }
-    .contact-item a { color: inherit; text-decoration: none; }
-
-    .contact-icon {
-      width: 28px; height: 28px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
-      background: var(--card);
-      flex-shrink: 0;
-    }
-
-    section {
-      padding: 52px 0 0;
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .6s, transform .6s;
-    }
-    section.visible { opacity: 1; transform: none; }
-
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--border), transparent);
-    }
-
-    .profil-text {
-      font-size: 16px;
-      line-height: 1.75;
-      color: var(--soft);
-      font-weight: 300;
-      max-width: 720px;
-      border-left: 2px solid var(--accent);
-      padding-left: 20px;
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-    }
-
-    .skill-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      transition: border-color .2s, transform .2s;
-    }
-    .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-
-    .skill-card-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--accent2);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-
-    .tag {
-      font-size: 11px;
-      font-family: 'DM Mono', monospace;
-      background: rgba(59,130,246,.1);
-      color: var(--soft);
-      padding: 3px 8px;
-      border-radius: 4px;
-      border: 1px solid rgba(59,130,246,.15);
-    }
-
-    .timeline { position: relative; padding-left: 24px; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 8px; bottom: 0;
-      width: 1px;
-      background: linear-gradient(180deg, var(--accent), transparent);
-    }
-
-    .tl-item { position: relative; margin-bottom: 36px; }
-    .tl-item::before {
-      content: '';
-      position: absolute;
-      left: -28px; top: 6px;
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 3px rgba(59,130,246,.2);
-    }
-
-    .tl-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 6px;
-    }
-
-    .tl-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--white);
-    }
-
-    .tl-company {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--accent2);
-      margin-top: 3px;
-    }
-
-    .tl-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 10.5px;
-      color: var(--dim);
-      white-space: nowrap;
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 3px 10px;
-      border-radius: 20px;
-      flex-shrink: 0;
-    }
-
-    .tl-bullets { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
-
-    .tl-bullets li {
-      font-size: 13.5px;
-      color: var(--dim);
-      padding-left: 16px;
-      position: relative;
-      line-height: 1.6;
-    }
-    .tl-bullets li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-size: 11px;
-      top: 2px;
-    }
-    .tl-bullets li strong { color: var(--soft); font-weight: 500; }
-
-    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-
-    .edu-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      transition: border-color .2s;
-    }
-    .edu-card:hover { border-color: var(--accent); }
-
-    .edu-level {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--accent2);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .edu-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); margin-bottom: 4px; }
-    .edu-school { font-size: 12px; color: var(--dim); margin-bottom: 6px; }
-    .edu-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); }
-
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chip {
-      font-size: 13px;
-      color: var(--soft);
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 99px;
-      padding: 6px 16px;
-      display: flex; align-items: center; gap: 8px;
-      transition: border-color .2s;
-    }
-    .chip:hover { border-color: var(--accent2); }
-    .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-
-    footer {
-      margin-top: 72px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--dim);
-      opacity: 0;
-      animation: fadeUp .6s 1s forwards;
-    }
-    footer a { color: var(--accent2); text-decoration: none; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: none; }
-    }
-    @keyframes pulse {
-      0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.4); }
-      70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
-      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
-    }
-
-    @media (max-width: 600px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-contact { align-items: flex-start; }
-      h1 { font-size: 42px; letter-spacing: -1px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="experience.html">Expérience</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="formation.html">Formation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+      <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
 <div class="page">
-
   <header class="hero">
     <div>
-      <p class="hero-tag"><span class="status-dot"></span> Disponible · Ouvert aux opportunités</p>
+      <p class="hero-tag"><span class="status-dot"></span>Disponible · Ouvert aux opportunités</p>
       <h1>Aurélien<br><span>Caudron</span></h1>
       <p class="hero-sub">
         <strong>Administrateur Systèmes &amp; Réseaux</strong><br>
         Cloud Microsoft · Intune · Azure · Autopilot<br>
         Hazebrouck / Lomme (59) · Permis B · 25 ans
       </p>
+      <div class="hero-cta">
+        <a href="missions.html" class="btn">Voir mes missions</a>
+        <a href="contact.html" class="btn btn-ghost">Me contacter</a>
+      </div>
     </div>
     <div class="hero-contact">
-      <div class="contact-item">
-        <div class="contact-icon">✉</div>
-        <a href="mailto:aurelienc59190@gmail.com">aurelienc59190@gmail.com</a>
+      <a class="contact-card-mini" href="mailto:aurelien@caudron.pro">
+        <span>✉</span><span>aurelien@caudron.pro</span>
+      </a>
+      <div class="contact-card-mini">
+        <span>📍</span><span>Hazebrouck / Lomme (59)</span>
       </div>
-      <div class="contact-item">
-        <div class="contact-icon">☎</div>
-        <a href="tel:+33621607439">+33 6 21 60 74 39</a>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon">⚑</div>
-        Anglais B2 · Mobile FR &amp; intl
+      <div class="contact-card-mini">
+        <span>⚑</span><span>Anglais B2 · Mobile FR &amp; intl</span>
       </div>
     </div>
   </header>
@@ -396,177 +59,61 @@
   <section>
     <p class="section-label">Profil</p>
     <p class="profil-text">
-      Administrateur Systèmes &amp; Réseaux passionné, spécialisé dans les environnements Microsoft
-      (Azure, Intune, Autopilot, Office 365). Trois ans d'expérience en déploiement cloud,
-      support N1/N2/N3, gestion de projets IT et formation d'équipes.
-      À l'aise en anglais technique, mobile France &amp; international.
+      Passé de technicien support à chef de projet cloud en trois ans d'alternance, puis confirmé en CDI,
+      j'ai développé une vision complète de l'infrastructure IT — du poste de travail à la gestion de tenant Microsoft.
+      Intervenant pour des clients de secteurs variés (retail, industrie, pharma, recherche),
+      je suis à l'aise aussi bien en autonomie sur site qu'en coordination avec des équipes internationales.
     </p>
   </section>
 
   <section>
-    <p class="section-label">Compétences</p>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-card-label">Cloud</div>
-        <div class="skill-tags">
-          <span class="tag">Microsoft Azure</span><span class="tag">Intune</span>
-          <span class="tag">Autopilot</span><span class="tag">Office 365</span><span class="tag">M365</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-label">Systèmes</div>
-        <div class="skill-tags">
-          <span class="tag">Windows Server</span><span class="tag">Linux</span>
-          <span class="tag">Active Directory</span><span class="tag">GPO</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-label">Réseau</div>
-        <div class="skill-tags">
-          <span class="tag">Firewall</span><span class="tag">VLAN</span>
-          <span class="tag">TCP/IP</span><span class="tag">VPN</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-label">Sécurité</div>
-        <div class="skill-tags">
-          <span class="tag">Kaspersky</span><span class="tag">With-Secure</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-label">Outils</div>
-        <div class="skill-tags">
-          <span class="tag">GLPI</span><span class="tag">PowerShell</span>
-          <span class="tag">Action1</span><span class="tag">ITSM</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-label">Supervision</div>
-        <div class="skill-tags">
-          <span class="tag">Zabbix</span><span class="tag">Nagios</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="section-label">Expérience professionnelle</p>
-    <div class="timeline">
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Administrateur Systèmes &amp; Réseaux</div>
-            <div class="tl-company">Extern IT · Wambrechies, France</div>
-          </div>
-          <span class="tl-date">Août 2024 – Juin 2025</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Interventions à distance et sur site (France, Belgique, Pays-Bas)</li>
-          <li>Création de tenants Microsoft, déploiement <strong>Intune / Autopilot</strong> avec groupes de sécurité et gestion des applications</li>
-          <li>Traitement d'incidents niveau 3 (système et réseau)</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Chef de projet Cloud OPS <em style="font-weight:400;font-size:14px;color:var(--dim)">(alternance)</em></div>
-            <div class="tl-company">Extern IT · Wambrechies, France</div>
-          </div>
-          <span class="tl-date">Sept. 2023 – Août 2024</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Centralisation, suivi et relance des projets IT</li>
-          <li>Audit réseau et matériel</li>
-          <li>Pilotage de la migration messagerie <strong>OVH vers Office 365</strong></li>
-          <li>Formation des nouveaux arrivants et stagiaires</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Administrateur Systèmes &amp; Réseaux <em style="font-weight:400;font-size:14px;color:var(--dim)">(alternance)</em></div>
-            <div class="tl-company">Extern IT · Wambrechies, France</div>
-          </div>
-          <span class="tl-date">Sept. 2021 – Août 2023</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Support N1/N2 : gestion des tickets incidents et demandes, back-log, relation téléphonique</li>
-          <li>Création et animation de formations : <strong>Action1, Intune, With-Secure, PowerShell</strong></li>
-          <li>Collaboration internationale (anglais) pour le déploiement d'un outil d'image système Windows</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Administrateur Systèmes <em style="font-weight:400;font-size:14px;color:var(--dim)">(stage)</em></div>
-            <div class="tl-company">CNRS – EGID · Lille, France</div>
-          </div>
-          <span class="tl-date">Janv. – Fév. 2021</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Analyse et refonte du système antivirus <strong>Kaspersky</strong></li>
-          <li>Expression du besoin, configuration et déploiement d'une nouvelle solution</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <section>
-    <p class="section-label">Formation</p>
-    <div class="edu-grid">
-      <div class="edu-card">
-        <div class="edu-level">RNCP Niveau 7</div>
-        <div class="edu-title">Chef de projet Cloud OPS</div>
-        <div class="edu-school">ASTON by SQLI · Lille</div>
-        <div class="edu-date">Sept. 2023 – Août 2024</div>
-      </div>
-      <div class="edu-card">
-        <div class="edu-level">RNCP Niveau 6</div>
-        <div class="edu-title">Admin. Systèmes, Réseaux &amp; Cloud</div>
-        <div class="edu-school">ASTON by SQLI · Lille</div>
-        <div class="edu-date">Sept. 2021 – Août 2023</div>
-      </div>
-      <div class="edu-card">
-        <div class="edu-level">Bac +2</div>
-        <div class="edu-title">BTS SIO – SISR</div>
-        <div class="edu-school">Lycée Jean Bart · Dunkerque</div>
-        <div class="edu-date">2019 – 2021</div>
-      </div>
-      <div class="edu-card">
-        <div class="edu-level">Baccalauréat</div>
-        <div class="edu-title">Bac S – Sciences ingénieur</div>
-        <div class="edu-school">Lycée des Flandres · Hazebrouck</div>
-        <div class="edu-date">2019</div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="section-label">Centres d'intérêts</p>
-    <div class="chips">
-      <div class="chip"><span class="chip-dot"></span>Course à pied &amp; semi-marathon</div>
-      <div class="chip"><span class="chip-dot"></span>Bricolage &amp; jardinage</div>
-      <div class="chip"><span class="chip-dot"></span>Tapisserie &amp; peinture</div>
-      <div class="chip"><span class="chip-dot"></span>Informatique &amp; nouvelles technologies</div>
+    <p class="section-label">Explorer</p>
+    <div class="quick-grid">
+      <a href="experience.html" class="quick-card">
+        <div class="quick-icon">💼</div>
+        <div class="quick-title">Expérience</div>
+        <div class="quick-sub">Extern IT · CNRS<br>Sept. 2021 – Juin 2025</div>
+      </a>
+      <a href="missions.html" class="quick-card">
+        <div class="quick-icon">🎯</div>
+        <div class="quick-title">Missions</div>
+        <div class="quick-sub">Intune · Cloud · Backup<br>PowerShell · Déploiement</div>
+      </a>
+      <a href="competences.html" class="quick-card">
+        <div class="quick-icon">⚙️</div>
+        <div class="quick-title">Compétences</div>
+        <div class="quick-sub">Cloud · Systèmes<br>Réseau · Sécurité</div>
+      </a>
+      <a href="formation.html" class="quick-card">
+        <div class="quick-icon">🎓</div>
+        <div class="quick-title">Formation</div>
+        <div class="quick-sub">RNCP Niv. 7<br>BTS SIO · Bac S</div>
+      </a>
     </div>
   </section>
 
   <footer>
     <span>© 2025 Aurélien Caudron</span>
-    <span><a href="mailto:aurelienc59190@gmail.com">aurelienc59190@gmail.com</a> · <a href="tel:+33621607439">+33 6 21 60 74 39</a></span>
+    <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
   </footer>
-
 </div>
 <script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('section').forEach(s => observer.observe(s));
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme") || "dark";
+  root.setAttribute("data-theme", saved);
+  function toggleTheme() {
+    const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+    document.querySelector(".theme-toggle").textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll("section").forEach(s => obs.observe(s));
+  });
 </script>
 </body>
 </html>

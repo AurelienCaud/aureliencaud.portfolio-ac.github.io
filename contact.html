@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Aurélien Caudron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="experience.html">Expérience</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="formation.html">Formation</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+      <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <div class="page-hero">
+    <p class="page-tag"><span class="status-dot"></span>Disponible · Ouvert aux opportunités</p>
+    <h1 class="page-title">Me <span>contacter</span></h1>
+  </div>
+
+  <section>
+    <p class="section-label">Coordonnées</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <a class="contact-item" href="mailto:aurelien@caudron.pro">
+          <span class="contact-icon">✉</span>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">aurelien@caudron.pro</div>
+          </div>
+        </a>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div>
+            <div class="contact-label">Localisation</div>
+            <div class="contact-val">Hazebrouck / Lomme (59)</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🚗</span>
+          <div>
+            <div class="contact-label">Mobilité</div>
+            <div class="contact-val">Permis B · Véhicule · Mobile FR &amp; international</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🌐</span>
+          <div>
+            <div class="contact-label">Langues</div>
+            <div class="contact-val">Français (natif) · Anglais technique B2</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="avail-card">
+          <div class="avail-header"><span class="status-dot"></span>Disponible</div>
+          <p class="avail-text">
+            Ouvert à tout type de contrat : CDI, CDD, mission.<br><br>
+            N'hésitez pas à me contacter directement par email.
+          </p>
+          <a href="mailto:aurelien@caudron.pro" class="btn" style="margin-top:20px;display:inline-block;">Envoyer un email</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Aurélien Caudron</span>
+    <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
+  </footer>
+</div>
+<script>
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme") || "dark";
+  root.setAttribute("data-theme", saved);
+  function toggleTheme() {
+    const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+    document.querySelector(".theme-toggle").textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll("section").forEach(s => obs.observe(s));
+  });
+</script>
+</body>
+</html>

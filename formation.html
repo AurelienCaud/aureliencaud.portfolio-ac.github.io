@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formation — Aurélien Caudron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="experience.html">Expérience</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="formation.html" class="active">Formation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+      <button class="nav-burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <div class="page-hero">
+    <p class="page-tag">Parcours académique</p>
+    <h1 class="page-title">Ma <span>formation</span></h1>
+  </div>
+
+  <section>
+    <p class="section-label">Diplômes</p>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-level">RNCP Niveau 7</div>
+        <div class="edu-title">Chef de projet Cloud OPS</div>
+        <div class="edu-school">ASTON by SQLI · Lille</div>
+        <div class="edu-date">Sept. 2023 – Août 2024</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">RNCP Niveau 6</div>
+        <div class="edu-title">Admin. Systèmes, Réseaux &amp; Cloud</div>
+        <div class="edu-school">ASTON by SQLI · Lille</div>
+        <div class="edu-date">Sept. 2021 – Août 2023</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Bac +2</div>
+        <div class="edu-title">BTS SIO – SISR</div>
+        <div class="edu-school">Lycée Jean Bart · Dunkerque</div>
+        <div class="edu-date">2019 – 2021</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Baccalauréat</div>
+        <div class="edu-title">Bac S – Sciences de l'ingénieur</div>
+        <div class="edu-school">Lycée des Flandres · Hazebrouck</div>
+        <div class="edu-date">2019</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Centres d'intérêts</p>
+    <div class="chips">
+      <div class="chip"><span class="chip-dot"></span>Course à pied &amp; semi-marathon</div>
+      <div class="chip"><span class="chip-dot"></span>Bricolage &amp; jardinage</div>
+      <div class="chip"><span class="chip-dot"></span>Tapisserie &amp; peinture</div>
+      <div class="chip"><span class="chip-dot"></span>Informatique &amp; nouvelles technologies</div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Aurélien Caudron</span>
+    <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
+  </footer>
+</div>
+<script>
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme") || "dark";
+  root.setAttribute("data-theme", saved);
+  function toggleTheme() {
+    const t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+    document.querySelector(".theme-toggle").textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll("section").forEach(s => obs.observe(s));
+  });
+</script>
+</body>
+</html>
