@@ -3,27 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aurélien Caudron — Administrateur Systèmes & Réseaux</title>
+  <title>Aurélien Caudron — Administrateur Systèmes &amp; Réseaux</title>
+
+  <!-- Favicon inline SVG encodé en base64 : initiales "AC" sur fond bleu -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233B82F6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='13' fill='white'%3EAC%3C/text%3E%3C/svg%3E" />
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
+    /* ============================================================
+       VARIABLES & RESET
+       Mode sombre par défaut, mode clair automatique selon l'OS
+    ============================================================ */
     :root {
-      --navy:    #0D1B2A;
-      --navy2:   #162032;
       --accent:  #3B82F6;
       --accent2: #60A5FA;
-      --dim:     #8899AA;
-      --soft:    #C8D8E8;
       --bg:      #07111C;
       --card:    #111E2C;
       --border:  rgba(59,130,246,.18);
-      --white:   #A8BEFF;
+      --dim:     #8899AA;
+      --soft:    #C8D8E8;
+      --white:   #F0F6FF;
+    }
+
+    /* Mode clair automatique selon préférence OS */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:    #F4F7FB;
+        --card:  #FFFFFF;
+        --dim:   #6B7A8D;
+        --soft:  #334155;
+        --white: #0D1B2A;
+      }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -32,394 +49,621 @@
       color: var(--white);
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background .3s, color .3s;
     }
 
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      opacity: .5;
-    }
-
+    /* Grille de fond subtile */
     body::after {
       content: '';
       position: fixed; inset: 0; z-index: 0;
       background-image:
-        linear-gradient(rgba(59,130,246,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,.04) 1px, transparent 1px);
+        linear-gradient(rgba(59,130,246,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,.03) 1px, transparent 1px);
       background-size: 48px 48px;
       pointer-events: none;
     }
 
-    .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
-
-    .hero {
-      padding: 80px 0 60px;
+    /* ============================================================
+       NAVIGATION STICKY
+       Reste visible en haut, liens = ancres vers les sections
+    ============================================================ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: end;
+      transition: background .3s;
     }
+    .nav-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 15px;
+      color: var(--white); text-decoration: none; letter-spacing: -.5px;
+      flex-shrink: 0;
+    }
+    .nav-logo span {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--dim); text-decoration: none;
+      padding: 6px 11px; border-radius: 6px; letter-spacing: .5px;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent2); background: rgba(59,130,246,.12); }
 
+    /* Burger pour mobile */
+    .nav-burger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .nav-burger span { display: block; width: 22px; height: 2px; background: var(--dim); border-radius: 2px; transition: .3s; }
+
+    /* ============================================================
+       CONTENEUR PRINCIPAL
+    ============================================================ */
+    .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ============================================================
+       HERO — Section d'accroche principale
+    ============================================================ */
+    .hero {
+      padding: 72px 0 52px;
+      border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 40px; align-items: center;
+    }
     .hero-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 2.5px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      opacity: 0;
-      animation: fadeUp .6s .1s forwards;
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      letter-spacing: 2.5px; color: var(--accent); text-transform: uppercase;
+      margin-bottom: 16px; opacity: 0; animation: fadeUp .6s .1s forwards;
     }
-
     h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(38px, 7vw, 68px);
-      font-weight: 800;
-      line-height: .95;
-      letter-spacing: -2px;
-      color: var(--white);
-      opacity: 0;
-      animation: fadeUp .6s .2s forwards;
+      font-size: clamp(36px, 6.5vw, 62px); font-weight: 800;
+      line-height: .95; letter-spacing: -2px; color: var(--white);
+      opacity: 0; animation: fadeUp .6s .2s forwards;
     }
-
     h1 span {
       display: block;
       background: linear-gradient(135deg, var(--accent2), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-
     .hero-sub {
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      color: var(--dim);
-      margin-top: 20px;
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeUp .6s .35s forwards;
+      font-family: 'DM Mono', monospace; font-size: 12.5px;
+      color: var(--dim); margin-top: 18px; line-height: 1.85;
+      opacity: 0; animation: fadeUp .6s .35s forwards;
     }
-
     .hero-sub strong { color: var(--soft); font-weight: 400; }
+    .hero-cta { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; opacity: 0; animation: fadeUp .6s .45s forwards; }
 
-    .status-dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      margin-right: 8px;
-      box-shadow: 0 0 0 0 rgba(34,197,94,.4);
-      animation: pulse 2s infinite;
+    /* Infos de contact dans le hero */
+    .hero-contact { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; opacity: 0; animation: fadeUp .6s .5s forwards; }
+    .contact-card-mini {
+      font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim);
+      display: flex; align-items: center; gap: 8px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 12px; text-decoration: none;
+      transition: border-color .2s, color .2s;
     }
+    .contact-card-mini:hover { border-color: var(--accent); color: var(--accent2); }
 
-    .hero-contact {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-end;
-      opacity: 0;
-      animation: fadeUp .6s .45s forwards;
+    /* ============================================================
+       BOUTONS
+    ============================================================ */
+    .btn {
+      font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .5px;
+      background: var(--accent); color: #fff;
+      padding: 9px 18px; border-radius: 8px; text-decoration: none;
+      transition: background .2s, transform .15s; display: inline-block;
     }
+    .btn:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--accent2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: rgba(59,130,246,.08); transform: translateY(-1px); }
 
-    .contact-item {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--dim);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color .2s;
-    }
-    .contact-item:hover { color: var(--accent2); }
-    .contact-item a { color: inherit; text-decoration: none; }
-
-    .contact-icon {
-      width: 28px; height: 28px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
-      background: var(--card);
-      flex-shrink: 0;
-    }
-
+    /* ============================================================
+       SECTIONS — apparaissent au scroll
+    ============================================================ */
     section {
-      padding: 52px 0 0;
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .6s, transform .6s;
+      padding: 64px 0 0;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .5s, transform .5s;
     }
     section.visible { opacity: 1; transform: none; }
 
+    /* Titre de section avec ligne décorative */
     .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 28px; display: flex; align-items: center; gap: 12px;
     }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--border), transparent);
-    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
 
+    /* ============================================================
+       PROFIL
+    ============================================================ */
     .profil-text {
-      font-size: 16px;
-      line-height: 1.75;
-      color: var(--soft);
-      font-weight: 300;
-      max-width: 720px;
-      border-left: 2px solid var(--accent);
-      padding-left: 20px;
+      font-size: 16px; line-height: 1.8; color: var(--soft); font-weight: 300;
+      max-width: 760px; border-left: 2px solid var(--accent); padding-left: 20px;
     }
 
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-    }
-
-    .skill-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      transition: border-color .2s, transform .2s;
-    }
-    .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-
-    .skill-card-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--accent2);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-
-    .tag {
-      font-size: 11px;
-      font-family: 'DM Mono', monospace;
-      background: rgba(59,130,246,.1);
-      color: var(--soft);
-      padding: 3px 8px;
-      border-radius: 4px;
-      border: 1px solid rgba(59,130,246,.15);
-    }
-
+    /* ============================================================
+       TIMELINE — Expériences professionnelles
+    ============================================================ */
     .timeline { position: relative; padding-left: 24px; }
+    /* Ligne verticale */
     .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 8px; bottom: 0;
-      width: 1px;
+      content: ''; position: absolute;
+      left: 0; top: 8px; bottom: 0; width: 1px;
       background: linear-gradient(180deg, var(--accent), transparent);
     }
-
     .tl-item { position: relative; margin-bottom: 36px; }
+    /* Point sur la timeline */
     .tl-item::before {
-      content: '';
-      position: absolute;
-      left: -28px; top: 6px;
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--accent);
+      content: ''; position: absolute;
+      left: -28px; top: 6px; width: 9px; height: 9px;
+      border-radius: 50%; background: var(--accent);
       box-shadow: 0 0 0 3px rgba(59,130,246,.2);
     }
-
-    .tl-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 6px;
-    }
-
-    .tl-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--white);
-    }
-
-    .tl-company {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--accent2);
-      margin-top: 3px;
-    }
-
-    .tl-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 10.5px;
-      color: var(--dim);
-      white-space: nowrap;
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 3px 10px;
-      border-radius: 20px;
-      flex-shrink: 0;
-    }
-
+    .tl-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+    .tl-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--white); }
+    .tl-company { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent2); margin-top: 3px; }
+    .tl-date { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--dim); white-space: nowrap; background: var(--card); border: 1px solid var(--border); padding: 3px 10px; border-radius: 20px; flex-shrink: 0; }
     .tl-bullets { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
-
-    .tl-bullets li {
-      font-size: 13.5px;
-      color: var(--dim);
-      padding-left: 16px;
-      position: relative;
-      line-height: 1.6;
-    }
-    .tl-bullets li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-size: 11px;
-      top: 2px;
-    }
+    .tl-bullets li { font-size: 13.5px; color: var(--dim); padding-left: 16px; position: relative; line-height: 1.6; }
+    .tl-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 11px; top: 2px; }
     .tl-bullets li strong { color: var(--soft); font-weight: 500; }
 
+    /* ============================================================
+       MISSIONS — Cartes par thématique
+    ============================================================ */
+    .missions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+    .mission-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px;
+      transition: border-color .2s, transform .2s;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .mission-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    /* Badge secteur */
+    .mission-sector {
+      font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent2);
+      background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.15);
+      padding: 3px 8px; border-radius: 4px; display: inline-block; width: fit-content;
+    }
+    .mission-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--white); line-height: 1.3; }
+    .mission-context { font-size: 12.5px; color: var(--dim); line-height: 1.6; font-style: italic; }
+    .mission-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
+    .mission-bullets li { font-size: 12px; color: var(--dim); padding-left: 14px; position: relative; line-height: 1.55; }
+    .mission-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 10px; top: 1px; }
+    .mission-bullets li strong { color: var(--soft); font-weight: 500; }
+
+    /* ============================================================
+       COMPÉTENCES — Grilles de tags
+    ============================================================ */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; transition: border-color .2s, transform .2s; }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .skill-card-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag { font-size: 11px; font-family: 'DM Mono', monospace; background: rgba(59,130,246,.08); color: var(--soft); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(59,130,246,.13); }
+
+    /* ============================================================
+       FORMATION
+    ============================================================ */
     .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-
-    .edu-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      transition: border-color .2s;
-    }
-    .edu-card:hover { border-color: var(--accent); }
-
-    .edu-level {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--accent2);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
+    .edu-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; transition: border-color .2s, transform .2s; }
+    .edu-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .edu-level { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
     .edu-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); margin-bottom: 4px; }
     .edu-school { font-size: 12px; color: var(--dim); margin-bottom: 6px; }
     .edu-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); }
 
+    /* ============================================================
+       CHIPS — Centres d'intérêts & soft skills
+    ============================================================ */
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chip {
-      font-size: 13px;
-      color: var(--soft);
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 99px;
-      padding: 6px 16px;
-      display: flex; align-items: center; gap: 8px;
-      transition: border-color .2s;
-    }
+    .chip { font-size: 13px; color: var(--soft); background: var(--card); border: 1px solid var(--border); border-radius: 99px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; transition: border-color .2s; }
     .chip:hover { border-color: var(--accent2); }
     .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
 
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .contact-info { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--dim); display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; text-decoration: none; transition: border-color .2s, color .2s; }
+    .contact-item:hover { border-color: var(--accent); color: var(--accent2); }
+    .contact-icon { font-size: 18px; flex-shrink: 0; }
+    .contact-label { font-size: 9px; color: var(--accent2); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px; }
+    .contact-val { color: var(--soft); font-size: 12px; }
+    .avail-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .avail-header { display: flex; align-items: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--white); margin-bottom: 14px; }
+    .avail-text { font-size: 13.5px; color: var(--dim); line-height: 1.7; }
+
+    /* Point vert animé "disponible" */
+    .status-dot {
+      display: inline-block; width: 8px; height: 8px;
+      background: #22c55e; border-radius: 50%; margin-right: 8px;
+      box-shadow: 0 0 0 0 rgba(34,197,94,.4);
+      animation: pulse 2s infinite;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
     footer {
-      margin-top: 72px;
-      padding-top: 24px;
+      margin-top: 72px; padding-top: 24px;
       border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--dim);
-      opacity: 0;
-      animation: fadeUp .6s 1s forwards;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim);
     }
     footer a { color: var(--accent2); text-decoration: none; }
 
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: none; }
     }
     @keyframes pulse {
-      0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.4); }
-      70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
-      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+      0%   { box-shadow: 0 0 0 0   rgba(34,197,94,.4); }
+      70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0);  }
+      100% { box-shadow: 0 0 0 0   rgba(34,197,94,0);  }
     }
 
-    @media (max-width: 600px) {
+    /* ============================================================
+       RESPONSIVE MOBILE
+    ============================================================ */
+    @media (max-width: 680px) {
+      /* Menu burger sur mobile */
+      .nav-links {
+        display: none; flex-direction: column;
+        position: absolute; top: 56px; left: 0; right: 0;
+        background: var(--bg); border-bottom: 1px solid var(--border);
+        padding: 12px 24px; z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-burger { display: flex; }
+      /* Hero en colonne sur mobile */
       .hero { grid-template-columns: 1fr; }
       .hero-contact { align-items: flex-start; }
-      h1 { font-size: 42px; letter-spacing: -1px; }
+      h1 { font-size: 40px; letter-spacing: -1px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .missions-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+<!-- ============================================================
+     NAVIGATION — ancres vers chaque section de la page
+============================================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#accueil" class="nav-logo">Aurélien <span>Caudron</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#profil">Profil</a></li>
+      <li><a href="#experience">Expérience</a></li>
+      <li><a href="#missions">Missions</a></li>
+      <li><a href="#competences">Compétences</a></li>
+      <li><a href="#formation">Formation</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
 <div class="page">
 
-  <header class="hero">
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <header id="accueil" class="hero">
     <div>
-      <p class="hero-tag"><span class="status-dot"></span> Disponible · Ouvert aux opportunités</p>
+      <p class="hero-tag"><span class="status-dot"></span>Disponible · Ouvert aux opportunités</p>
       <h1>Aurélien<br><span>Caudron</span></h1>
       <p class="hero-sub">
         <strong>Administrateur Systèmes &amp; Réseaux</strong><br>
         Cloud Microsoft · Intune · Azure · Autopilot<br>
         Hazebrouck / Lomme (59) · Permis B · 25 ans
       </p>
+      <div class="hero-cta">
+        <a href="#missions" class="btn">Voir mes missions</a>
+        <a href="#contact" class="btn btn-ghost">Me contacter</a>
+      </div>
     </div>
     <div class="hero-contact">
-      <div class="contact-item">
-        <div class="contact-icon">✉</div>
-        <a href="mailto:aurelienc59190@gmail.com">aurelienc59190@gmail.com</a>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon">☎</div>
-        <a href="tel:+33621607439">+33 6 21 60 74 39</a>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon">⚑</div>
-        Anglais B2 · Mobile FR &amp; intl
+      <a class="contact-card-mini" href="mailto:aurelien@caudron.pro">
+        <span>✉</span><span>aurelien@caudron.pro</span>
+      </a>
+      <a class="contact-card-mini" href="https://www.linkedin.com/in/acaudron" target="_blank" rel="noopener">
+        <span>💼</span><span>linkedin.com/in/acaudron</span>
+      </a>
+      <div class="contact-card-mini">
+        <span>📍</span><span>Hazebrouck / Lomme (59) · Mobile HDF</span>
       </div>
     </div>
   </header>
 
-  <section>
+  <!-- ============================================================
+       PROFIL
+  ============================================================ -->
+  <section id="profil">
     <p class="section-label">Profil</p>
     <p class="profil-text">
-      Administrateur Systèmes &amp; Réseaux passionné, spécialisé dans les environnements Microsoft
-      (Azure, Intune, Autopilot, Office 365). Trois ans d'expérience en déploiement cloud,
-      support N1/N2/N3, gestion de projets IT et formation d'équipes.
-      À l'aise en anglais technique, mobile France &amp; international.
+      Passé de technicien support à chef de projet cloud en trois ans d'alternance, puis confirmé en CDI,
+      j'ai développé une vision complète de l'infrastructure IT — du poste de travail à la gestion de tenant Microsoft.
+      Intervenant pour des clients de secteurs variés (retail, industrie, pharma, recherche),
+      je suis à l'aise aussi bien en autonomie sur site qu'en coordination avec des équipes internationales,
+      avec des déplacements réguliers en Belgique et aux Pays-Bas.
     </p>
   </section>
 
-  <section>
+  <!-- ============================================================
+       EXPÉRIENCE PROFESSIONNELLE
+  ============================================================ -->
+  <section id="experience">
+    <p class="section-label">Expérience professionnelle</p>
+    <div class="timeline">
+
+      <!-- Poste 1 -->
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Administrateur Systèmes &amp; Réseaux</div>
+            <div class="tl-company">Extern IT · Wambrechies</div>
+          </div>
+          <span class="tl-date">Août 2024 – Juin 2025</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Interventions à distance et sur site en France, Belgique et Pays-Bas</li>
+          <li>Déploiement <strong>Intune / Autopilot</strong> : création de tenants, profils, groupes de sécurité et gestion des applications</li>
+          <li>Traitement d'incidents niveau 3 (système et réseau)</li>
+        </ul>
+      </div>
+
+      <!-- Poste 2 -->
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Chef de projet Cloud OPS <em style="font-weight:300;font-size:14px;color:var(--dim)">(alternance)</em></div>
+            <div class="tl-company">Extern IT · Wambrechies</div>
+          </div>
+          <span class="tl-date">Sept. 2023 – Août 2024</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Pilotage et suivi de projets IT multi-clients</li>
+          <li>Migration messagerie <strong>OVH vers Office 365</strong></li>
+          <li>Audit réseau et matériel · Formation des nouveaux arrivants</li>
+        </ul>
+      </div>
+
+      <!-- Poste 3 -->
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Administrateur Systèmes &amp; Réseaux <em style="font-weight:300;font-size:14px;color:var(--dim)">(alternance)</em></div>
+            <div class="tl-company">Extern IT · Wambrechies</div>
+          </div>
+          <span class="tl-date">Sept. 2021 – Août 2023</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Support multi-niveaux N1/N2/N3 pour un portefeuille de clients diversifiés</li>
+          <li>Animation de formations internes : <strong>Action1, Intune, With-Secure, PowerShell</strong></li>
+          <li>Collaboration internationale pour le déploiement d'outils d'image système Windows</li>
+        </ul>
+      </div>
+
+      <!-- Poste 4 -->
+      <div class="tl-item">
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Administrateur Systèmes <em style="font-weight:300;font-size:14px;color:var(--dim)">(stage)</em></div>
+            <div class="tl-company">CNRS – EGID · Lille</div>
+          </div>
+          <span class="tl-date">Janv. – Fév. 2021</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Audit et refonte complète du système antivirus <strong>Kaspersky</strong></li>
+          <li>Conception de la politique de sécurité, déploiement sur l'ensemble du parc</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MISSIONS CLIENTS
+  ============================================================ -->
+  <section id="missions">
+    <p class="section-label">Missions clients</p>
+
+    <!-- Cloud & Mobilité -->
+    <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Cloud &amp; Mobilité</p>
+    <div class="missions-grid" style="margin-bottom:32px;">
+
+      <div class="mission-card">
+        <span class="mission-sector">Retail · Wambrechies</span>
+        <div class="mission-title">Déploiement Intune &amp; migration cloud Microsoft</div>
+        <div class="mission-context">Client sans outil de gestion de parc, saturé par les limites de ses boîtes mails OVH (5 Go). Migration complète vers l'écosystème Microsoft pour 25 utilisateurs.</div>
+        <ul class="mission-bullets">
+          <li>Cadrage vers <strong>Azure &amp; Intune</strong> : chiffrement, MFA, accès conditionnel, politique de correctifs</li>
+          <li>Création du tenant, des utilisateurs en masse, de la hiérarchie et des droits d'accès</li>
+          <li>Configuration des profils Intune, test sur pool cible, enrollment &amp; formatage en roulement pour limiter l'impact utilisateur</li>
+          <li>Migration de <strong>Dropbox vers SharePoint</strong> et des boîtes mails vers le cloud</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Retail · Armentières</span>
+        <div class="mission-title">Migration messagerie OVH vers Office 365</div>
+        <div class="mission-context">Remédiation d'un environnement Microsoft utilisant des licences personnelles partagées, non conformes. 25 utilisateurs migrés.</div>
+        <ul class="mission-bullets">
+          <li>Audit des licences Office et des boîtes mails actives</li>
+          <li>Cartographie cible : comptes, droits, types de licences, historiques à rapatrier</li>
+          <li>Migration du flux <strong>MX</strong> et des historiques en heure non ouvrable</li>
+          <li>Accompagnement sur site pour le paramétrage des accès et du <strong>MFA en accès conditionnel</strong></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Sauvegarde & Continuité -->
+    <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Sauvegarde &amp; Continuité</p>
+    <div class="missions-grid" style="margin-bottom:32px;">
+
+      <div class="mission-card">
+        <span class="mission-sector">Retail · Wambrechies</span>
+        <div class="mission-title">Sauvegarde Office 365 — NAS Synology</div>
+        <div class="mission-context">Sécurisation des données M365 pour s'affranchir des limites du versioning natif.</div>
+        <ul class="mission-bullets">
+          <li>Dimensionnement des volumes selon la politique de rétention client</li>
+          <li>Déploiement d'un <strong>NAS Synology</strong> et configuration d'Active Backup for O365</li>
+          <li>Sauvegarde automatisée des comptes, boîtes mails, OneDrive et SharePoint</li>
+          <li>Procédures de restauration et PRA en cas de compromission du tenant</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Pharma / Biotech · Loos</span>
+        <div class="mission-title">Reprise en main de l'infrastructure de sauvegarde sur bande</div>
+        <div class="mission-context">Urgence suite au départ d'un collaborateur : infrastructure critique sans documentation. Environnement de ~250 utilisateurs et ~30 serveurs Windows/Linux.</div>
+        <ul class="mission-bullets">
+          <li>Renouvellement complet d'un lot de cassettes vieillissantes</li>
+          <li>Documentation technique complète sous <strong>Veeam</strong> : détection, nommage, mise en service, vérification, dépannage</li>
+          <li>Mise en place de la supervision et tests de restauration en condition réelle pour valider le PRA</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Automatisation & Déploiement -->
+    <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Automatisation &amp; Déploiement</p>
+    <div class="missions-grid" style="margin-bottom:32px;">
+
+      <div class="mission-card">
+        <span class="mission-sector">Immobilier · Wasquehal</span>
+        <div class="mission-title">Automatisation PowerShell — Gestion des comptes AD</div>
+        <div class="mission-context">Processus de création de 45 comptes Active Directory jusqu'alors manuel et source d'erreurs récurrentes d'attributs et de licences.</div>
+        <ul class="mission-bullets">
+          <li>Développement d'un script <strong>PowerShell interactif</strong> conçu de A à Z, avec saisie obligatoire des données clés</li>
+          <li>Automatisation de la modification des attributs et de l'affectation des groupes de sécurité</li>
+          <li>Élimination des oublis de configuration et réduction significative du temps de provisionnement</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Industrie · Templemars</span>
+        <div class="mission-title">Masterisation &amp; déploiement de postes de travail</div>
+        <div class="mission-context">Relais technique local pour les filiales française, belge et hollandaise, en coordination avec un support global basé en Angleterre.</div>
+        <ul class="mission-bullets">
+          <li>Masterisation, configuration multilingue et personnalisation des équipements (laptops, desktops, AIO)</li>
+          <li>Gestion de la logistique d'expédition et déploiements physiques sur site</li>
+          <li>Audit du parc, identification du matériel obsolète, escalade des tickets bloquants</li>
+          <li>Déplacements réguliers en autonomie en <strong>Belgique et aux Pays-Bas</strong></li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Pharma / Biotech · Loos</span>
+        <div class="mission-title">Création de template VMware — Windows Server 2019</div>
+        <div class="mission-context">Harmonisation des créations de VMs pour éliminer les erreurs de configuration et accélérer les provisionnements.</div>
+        <ul class="mission-bullets">
+          <li>Création et configuration d'une VM de référence sous <strong>VMware vSphere</strong> : ressources, durcissement WS2019</li>
+          <li>Intégration de <strong>BGInfo (Sysinternals)</strong> : fond d'écran dynamique affichant nom du serveur, IP, RAM et logo client</li>
+          <li>Suppression volontaire de la carte réseau pour forcer le choix conscient du segment réseau au déploiement</li>
+          <li>Application des GPO de base, configuration WSUS, politique de mots de passe, désactivation des services inutiles</li>
+          <li>Conversion en template vSphere avec documentation complète du processus (clonage, sysprep, jonction au domaine)</li>
+          <li>Réduction significative du temps de provisionnement et élimination des oublis de configuration</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Sécurité -->
+    <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Sécurité &amp; Administration</p>
+    <div class="missions-grid">
+
+      <div class="mission-card">
+        <span class="mission-sector">Recherche · Lille</span>
+        <div class="mission-title">Refonte du système antivirus — CNRS (EGID)</div>
+        <div class="mission-context">Reprise en main d'un serveur de sécurité non managé et de postes hors contrôle dans un laboratoire de recherche.</div>
+        <ul class="mission-bullets">
+          <li>Audit de l'existant, recueil des contraintes spécifiques aux postes de production et d'analyse</li>
+          <li>Conception de la politique de sécurité cible : groupes de machines, règles d'exclusion</li>
+          <li>Configuration, automatisation et déploiement sur l'ensemble du parc</li>
+        </ul>
+      </div>
+
+      <div class="mission-card">
+        <span class="mission-sector">Multi-clients</span>
+        <div class="mission-title">Support &amp; administration systèmes multi-niveaux</div>
+        <div class="mission-context">Prise en charge continue du support technique pour un portefeuille de clients aux environnements variés.</div>
+        <ul class="mission-bullets">
+          <li>Support N1/N2/N3 : incidents, demandes, back-log, relation téléphonique</li>
+          <li>Supervision et maintenance de parcs informatiques</li>
+          <li>Administration <strong>Windows Server, Active Directory, GPO</strong></li>
+          <li>Gestion via <strong>GLPI</strong> et <strong>ServiceNow</strong></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMPÉTENCES TECHNIQUES
+  ============================================================ -->
+  <section id="competences">
     <p class="section-label">Compétences</p>
     <div class="skills-grid">
+
       <div class="skill-card">
-        <div class="skill-card-label">Cloud</div>
+        <div class="skill-card-label">Cloud Microsoft</div>
         <div class="skill-tags">
-          <span class="tag">Microsoft Azure</span><span class="tag">Intune</span>
-          <span class="tag">Autopilot</span><span class="tag">Office 365</span><span class="tag">M365</span>
+          <span class="tag">Azure</span><span class="tag">Intune</span>
+          <span class="tag">Autopilot</span><span class="tag">Office 365</span>
+          <span class="tag">M365</span><span class="tag">SharePoint</span>
         </div>
       </div>
+
       <div class="skill-card">
-        <div class="skill-card-label">Systèmes</div>
+        <div class="skill-card-label">Windows Server</div>
         <div class="skill-tags">
-          <span class="tag">Windows Server</span><span class="tag">Linux</span>
+          <span class="tag">2012</span><span class="tag">2012 R2</span>
+          <span class="tag">2016</span><span class="tag">2019</span><span class="tag">2022</span>
           <span class="tag">Active Directory</span><span class="tag">GPO</span>
         </div>
       </div>
+
+      <div class="skill-card">
+        <div class="skill-card-label">Linux</div>
+        <div class="skill-tags">
+          <span class="tag">Ubuntu</span><span class="tag">Debian</span>
+          <span class="tag">Administration système</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-label">Virtualisation</div>
+        <div class="skill-tags">
+          <span class="tag">VMware vSphere</span><span class="tag">Hyper-V</span>
+          <span class="tag">Templates VM</span><span class="tag">Sysprep</span>
+        </div>
+      </div>
+
       <div class="skill-card">
         <div class="skill-card-label">Réseau</div>
         <div class="skill-tags">
@@ -427,96 +671,58 @@
           <span class="tag">TCP/IP</span><span class="tag">VPN</span>
         </div>
       </div>
+
+      <div class="skill-card">
+        <div class="skill-card-label">Sauvegarde</div>
+        <div class="skill-tags">
+          <span class="tag">Veeam</span><span class="tag">Synology NAS</span>
+          <span class="tag">Active Backup O365</span><span class="tag">PRA</span>
+        </div>
+      </div>
+
       <div class="skill-card">
         <div class="skill-card-label">Sécurité</div>
         <div class="skill-tags">
           <span class="tag">Kaspersky</span><span class="tag">With-Secure</span>
+          <span class="tag">MFA</span><span class="tag">Accès conditionnel</span>
         </div>
       </div>
+
       <div class="skill-card">
-        <div class="skill-card-label">Outils</div>
+        <div class="skill-card-label">Scripting &amp; Outils</div>
         <div class="skill-tags">
-          <span class="tag">GLPI</span><span class="tag">PowerShell</span>
-          <span class="tag">Action1</span><span class="tag">ITSM</span>
+          <span class="tag">PowerShell</span><span class="tag">BGInfo</span>
+          <span class="tag">GLPI</span><span class="tag">ServiceNow</span><span class="tag">Action1</span>
         </div>
       </div>
+
       <div class="skill-card">
         <div class="skill-card-label">Supervision</div>
         <div class="skill-tags">
           <span class="tag">Zabbix</span><span class="tag">Nagios</span>
         </div>
       </div>
+
+    </div>
+
+    <!-- Soft skills -->
+    <div style="margin-top:16px;">
+      <div class="chips">
+        <div class="chip"><span class="chip-dot"></span>Gestion de projet IT</div>
+        <div class="chip"><span class="chip-dot"></span>Support N1 / N2 / N3</div>
+        <div class="chip"><span class="chip-dot"></span>Formation &amp; pédagogie</div>
+        <div class="chip"><span class="chip-dot"></span>Documentation technique</div>
+        <div class="chip"><span class="chip-dot"></span>ITIL</div>
+        <div class="chip"><span class="chip-dot"></span>Anglais B2</div>
+        <div class="chip"><span class="chip-dot"></span>Mobile HDF</div>
+      </div>
     </div>
   </section>
 
-  <section>
-    <p class="section-label">Expérience professionnelle</p>
-    <div class="timeline">
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Administrateur Systèmes &amp; Réseaux</div>
-            <div class="tl-company">Extern IT · Wambrechies, France</div>
-          </div>
-          <span class="tl-date">Août 2024 – Juin 2025</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Interventions à distance et sur site (France, Belgique, Pays-Bas)</li>
-          <li>Création de tenants Microsoft, déploiement <strong>Intune / Autopilot</strong> avec groupes de sécurité et gestion des applications</li>
-          <li>Traitement d'incidents niveau 3 (système et réseau)</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Chef de projet Cloud OPS <em style="font-weight:400;font-size:14px;color:var(--dim)">(alternance)</em></div>
-            <div class="tl-company">Extern IT · Wambrechies, France</div>
-          </div>
-          <span class="tl-date">Sept. 2023 – Août 2024</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Centralisation, suivi et relance des projets IT</li>
-          <li>Audit réseau et matériel</li>
-          <li>Pilotage de la migration messagerie <strong>OVH vers Office 365</strong></li>
-          <li>Formation des nouveaux arrivants et stagiaires</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Administrateur Systèmes &amp; Réseaux <em style="font-weight:400;font-size:14px;color:var(--dim)">(alternance)</em></div>
-            <div class="tl-company">Extern IT · Wambrechies, France</div>
-          </div>
-          <span class="tl-date">Sept. 2021 – Août 2023</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Support N1/N2 : gestion des tickets incidents et demandes, back-log, relation téléphonique</li>
-          <li>Création et animation de formations : <strong>Action1, Intune, With-Secure, PowerShell</strong></li>
-          <li>Collaboration internationale (anglais) pour le déploiement d'un outil d'image système Windows</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-header">
-          <div>
-            <div class="tl-title">Administrateur Systèmes <em style="font-weight:400;font-size:14px;color:var(--dim)">(stage)</em></div>
-            <div class="tl-company">CNRS – EGID · Lille, France</div>
-          </div>
-          <span class="tl-date">Janv. – Fév. 2021</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Analyse et refonte du système antivirus <strong>Kaspersky</strong></li>
-          <li>Expression du besoin, configuration et déploiement d'une nouvelle solution</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <section>
+  <!-- ============================================================
+       FORMATION
+  ============================================================ -->
+  <section id="formation">
     <p class="section-label">Formation</p>
     <div class="edu-grid">
       <div class="edu-card">
@@ -539,34 +745,112 @@
       </div>
       <div class="edu-card">
         <div class="edu-level">Baccalauréat</div>
-        <div class="edu-title">Bac S – Sciences ingénieur</div>
+        <div class="edu-title">Bac S – Sciences de l'ingénieur</div>
         <div class="edu-school">Lycée des Flandres · Hazebrouck</div>
         <div class="edu-date">2019</div>
       </div>
     </div>
-  </section>
 
-  <section>
-    <p class="section-label">Centres d'intérêts</p>
-    <div class="chips">
-      <div class="chip"><span class="chip-dot"></span>Course à pied &amp; semi-marathon</div>
-      <div class="chip"><span class="chip-dot"></span>Bricolage &amp; jardinage</div>
-      <div class="chip"><span class="chip-dot"></span>Tapisserie &amp; peinture</div>
-      <div class="chip"><span class="chip-dot"></span>Informatique &amp; nouvelles technologies</div>
+    <div style="margin-top:20px;">
+      <div class="chips">
+        <div class="chip"><span class="chip-dot"></span>Course à pied &amp; semi-marathon</div>
+        <div class="chip"><span class="chip-dot"></span>Bricolage &amp; jardinage</div>
+        <div class="chip"><span class="chip-dot"></span>Tapisserie &amp; peinture</div>
+        <div class="chip"><span class="chip-dot"></span>Informatique &amp; nouvelles technologies</div>
+      </div>
     </div>
   </section>
 
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <a class="contact-item" href="mailto:aurelien@caudron.pro">
+          <span class="contact-icon">✉</span>
+          <div><div class="contact-label">Email</div><div class="contact-val">aurelien@caudron.pro</div></div>
+        </a>
+        <a class="contact-item" href="https://www.linkedin.com/in/acaudron" target="_blank" rel="noopener">
+          <span class="contact-icon">💼</span>
+          <div><div class="contact-label">LinkedIn</div><div class="contact-val">linkedin.com/in/acaudron</div></div>
+        </a>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div><div class="contact-label">Localisation</div><div class="contact-val">Hazebrouck / Lomme (59)</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🚗</span>
+          <div><div class="contact-label">Mobilité</div><div class="contact-val">Permis B · Véhicule · Mobile HDF</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🌐</span>
+          <div><div class="contact-label">Langues</div><div class="contact-val">Français natif · Anglais B2</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="avail-card">
+          <div class="avail-header"><span class="status-dot"></span>Disponible</div>
+          <p class="avail-text">
+            Ouvert à tout type de contrat : CDI, CDD, mission.<br><br>
+            N'hésitez pas à me contacter par email ou via
+            <a href="https://www.linkedin.com/in/acaudron" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none;">LinkedIn</a>.
+          </p>
+          <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+            <a href="mailto:aurelien@caudron.pro" class="btn">Envoyer un email</a>
+            <a href="https://www.linkedin.com/in/acaudron" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    <span>© 2025 Aurélien Caudron</span>
-    <span><a href="mailto:aurelienc59190@gmail.com">aurelienc59190@gmail.com</a> · <a href="tel:+33621607439">+33 6 21 60 74 39</a></span>
+    <span>© 2026 Aurélien Caudron</span>
+    <span>
+      <a href="mailto:aurelien@caudron.pro">aurelien@caudron.pro</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/acaudron" target="_blank" rel="noopener">LinkedIn</a>
+    </span>
   </footer>
 
 </div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     - Highlight du lien actif dans la nav selon la section visible
+     - Apparition des sections au scroll
+============================================================ -->
 <script>
+  // Sections visibles → lien actif dans la nav
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('section').forEach(s => observer.observe(s));
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Highlight du bon lien
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  // Animation au scroll + observation pour nav active
+  document.querySelectorAll('section').forEach(s => {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    }, { threshold: 0.1 }).observe(s);
+  });
+
+  sections.forEach(s => observer.observe(s));
 </script>
+
 </body>
 </html>
